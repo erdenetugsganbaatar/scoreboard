@@ -20,7 +20,9 @@ export default {
     Match
   },
   methods: {
-    
+    startMatch() {
+      this.isStarted = true;
+    }
   }
 }
 </script>
