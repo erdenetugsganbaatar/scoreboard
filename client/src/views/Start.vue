@@ -2,51 +2,79 @@
   <div class="start">
     <TeamDisplay :teams="westTeams"></TeamDisplay>
     <div class="controllers">
-      <button @click="startMatch">Start match</button>
+      <TimePicker></TimePicker>
+      <button class="primary-button start-button" @click="startMatch">
+        Start match
+      </button>
     </div>
     <TeamDisplay :teams="eastTeams"></TeamDisplay>
   </div>
 </template>
 
 <script>
-import TeamDisplay from '~/src/components/TeamDisplay'
+import TeamDisplay from "~/src/components/TeamDisplay";
+import TimePicker from "~/src/components/TimePicker";
+
 export default {
-  name: 'Start',
+  name: "Start",
   components: {
     TeamDisplay,
+    TimePicker,
   },
   data() {
     return {
       eastTeams: [],
       westTeams: [],
-    }
+    };
   },
   props: {
     startMatch: Function,
   },
   methods: {
     async fetchTeams() {
-      const res = await fetch('https://www.balldontlie.io/api/v1/teams')
-      const { data } = await res.json()
-      return data
+      const res = await fetch("http://localhost:3000/teams");
+      const data = await res.json();
+      return data;
     },
     async fetchAndSplitTeams() {
-      const data = await this.fetchTeams()
-      this.eastTeams = data.filter((team) => team.conference === 'East')
-      this.westTeams = data.filter((team) => team.conference === 'West')
+      const data = await this.fetchTeams();
+      this.eastTeams = data.filter((team) => team.conference === "East");
+      this.westTeams = data.filter((team) => team.conference === "West");
     },
   },
   mounted() {
-    this.fetchAndSplitTeams()
+    this.fetchAndSplitTeams();
   },
-}
+};
 </script>
 
-<style scoped>
+<style>
 .start {
   display: flex;
+  background-color: var(--third-color);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
 }
-.start > *{
-  flex:1;
+.start-button,
+.time-input {
+  font-size: 2rem;
+}
+.controllers {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  row-gap: 1rem;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
+}
+.start-button {
+  cursor: pointer;
+}
+.start .team-display {
+  flex: 1;
 }
 </style>

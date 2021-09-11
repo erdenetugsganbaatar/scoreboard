@@ -4,7 +4,8 @@
       :isSelected="selection[team.id]"
       :toggleSelected="toggleSelected"
       :key="team.id"
-      v-for="team in teams"
+      v-for="(team, index) in teams"
+      :index="index"
       :team="team"
     ></TeamCard>
   </div>
@@ -34,13 +35,15 @@ export default {
       this.selection[id] = !this.selection[id];
       this.selection = Object.assign({}, this.selection, {});
       this.lastSelectionIndex = id;
-      console.log("selection:", this.selection);
     },
     initSelections() {
       // баг бүрийн сонгогдсон эсэх мэдээлэллийг init хийх
       this.teams.forEach((team) => {
         this.selection[team.id] = false;
       });
+      // хамгийн анх аль нэг багийг сонгоно
+      this.selection[this.teams[0].id] = true;
+      this.lastSelectionIndex = this.teams[0].id;
     },
   },
   watch: {
@@ -48,9 +51,18 @@ export default {
       this.initSelections();
     },
   },
-  mounted() {},
+  mounted() {
+   
+  },
 };
 </script>
 
 <style scoped>
+.team-display {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  justify-items: center;
+  gap: 1.5rem;
+}
 </style>

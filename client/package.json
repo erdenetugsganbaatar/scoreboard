@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "vue": "^2.6.14",
-    "vue-hot-reload-api": "^2.3.4"
+    "vue-hot-reload-api": "^2.3.4",
+    "vue2-timepicker": "^1.1.6"
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.2.2",
