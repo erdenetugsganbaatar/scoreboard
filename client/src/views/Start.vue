@@ -15,6 +15,8 @@
 import TeamDisplay from "~/src/components/TeamDisplay";
 import TimePicker from "~/src/components/TimePicker";
 
+import axios from "../axios";
+
 export default {
   name: "Start",
   components: {
@@ -32,9 +34,9 @@ export default {
   },
   methods: {
     async fetchTeams() {
-      const res = await fetch("http://localhost:3000/teams");
-      const data = await res.json();
-      return data;
+      const res = await axios.get("/teams");
+      return res.data;
+      
     },
     async fetchAndSplitTeams() {
       const data = await this.fetchTeams();

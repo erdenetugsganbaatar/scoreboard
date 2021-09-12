@@ -8,6 +8,8 @@
 import Start from "./views/Start.vue";
 import Match from "./views/Match.vue";
 
+import axios from "./axios";
+
 export default {
   name: "App",
   data() {
@@ -20,8 +22,10 @@ export default {
     Match,
   },
   methods: {
-    startMatch() {
-      this.isStarted = true;
+    async startMatch(gameData) {
+      const res = await axios.post("/start");
+      if (res.status === 200) this.isStarted = true;
+      console.log(res.data);
     },
   },
 };
@@ -36,9 +40,9 @@ export default {
 }
 .primary-button {
   background-color: var(--primary-color);
-  color:var(--background-color);
-  border:none;
-  border-radius:1rem;
-  padding:0.4rem 2rem;
+  color: var(--background-color);
+  border: none;
+  border-radius: 1rem;
+  padding: 0.4rem 2rem;
 }
 </style>
