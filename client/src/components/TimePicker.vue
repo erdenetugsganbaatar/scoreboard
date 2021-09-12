@@ -123,7 +123,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .digit {
   font-size: 3rem;
   font-weight: bold;
@@ -142,14 +142,17 @@ export default {
 /* cursor-on class-г өөр digit дээр нэмсэнээр cursor гаргаж ирнэ toggle хийнэ */
 .edit-mode .digit.cursor-on::after {
   content: "|";
-  animation: blink 0.5s infinite linear;
+  animation: blink 1s infinite linear;
 }
 
 @keyframes blink {
   0% {
     visibility: visible;
   }
-  50% {
+  25% {
+    visibility: hidden;
+  }
+  75%{
     visibility: hidden;
   }
   100% {
