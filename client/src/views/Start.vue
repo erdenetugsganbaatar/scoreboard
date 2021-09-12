@@ -55,7 +55,6 @@ export default {
   border-radius: 1rem;
   padding: 1rem;
   width: 100%;
-  flex-wrap: wrap;
 }
 .start-button,
 .time-input {
