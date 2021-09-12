@@ -1,7 +1,7 @@
 <template>
   <div class="team-display">
     <TeamCard
-      :isSelected="selection[team.id]"
+      :isSelected="team.id === selection"
       :toggleSelected="toggleSelected"
       :key="team.id"
       v-for="(team, index) in teams"
@@ -21,29 +21,24 @@ export default {
   },
   data() {
     return {
-      selection: {}, // баг бүрийн сонгогдсон эсэх мэдээлэл
-      lastSelectionIndex: null, //хамгийн сүүлд сонгогдсон багийн index
+      selection: null, // сонгогдсон багийн id
     };
   },
   props: {
     teams: Array,
+    setSelection: Function,
+    conference: String,
   },
   methods: {
     // нэг багийг сонгож бусдыг нь цуцлана
     toggleSelected(id) {
-      this.selection[this.lastSelectionIndex] = false;
-      this.selection[id] = !this.selection[id];
-      this.selection = Object.assign({}, this.selection, {});
-      this.lastSelectionIndex = id;
+      this.selection = id;
+      this.setSelection(id,this.conference)
     },
     initSelections() {
-      // баг бүрийн сонгогдсон эсэх мэдээлэллийг init хийх
-      this.teams.forEach((team) => {
-        this.selection[team.id] = false;
-      });
       // хамгийн анх аль нэг багийг сонгоно
-      this.selection[this.teams[0].id] = true;
-      this.lastSelectionIndex = this.teams[0].id;
+      this.selection = this.teams[0].id;
+      this.setSelection(this.teams[0].id,this.conference)
     },
   },
   watch: {

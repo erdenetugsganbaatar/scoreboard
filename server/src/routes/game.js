@@ -4,7 +4,7 @@ const router = Router();
 
 router.route("/start")
     .post((req,res) => {        
-        res.send({message:"Hi!"});
+        res.send(req.body);
     })
 
 module.exports = router;

@@ -2,6 +2,8 @@
   <div
     @click="toggleEditMode"
     class="time-picker-wrapper"
+    unselectable="on"
+    onselectstart="return false;"
     v-bind:class="{ 'edit-mode': isOnEditMode }"
   >
     <span v-if="canShowHour" class="hour">
@@ -35,7 +37,9 @@ export default {
       editDigits: "",
     };
   },
-  props: {},
+  props: {
+    setGameDuration: Function,
+  },
   methods: {
     editModeEventListener: function (e) {
       // check if pressed key is number
@@ -43,6 +47,9 @@ export default {
         this.editDigits += e.key;
         if (this.cursorIndex == 0) {
           this.cursorIndex = 5;
+          this.setGameDuration(
+            this.getGameDurationFromEditDigits(this.editDigits)
+          );
           return (this.isOnEditMode = false);
         }
         this.cursorIndex > 0 && this.cursorIndex--;
@@ -58,11 +65,30 @@ export default {
         document.removeEventListener("keyup", this.editModeEventListener);
       }
     },
+    getGameDurationFromEditDigits: function (editDigits) {
+      const { hour, minute, second } = this.getTimeFromEditDigits(editDigits);
+      return 60 * (60 * hour + minute) + second;
+    },
+    getTimeFromEditDigits: function (editDigits) {
+      const editDigitsArray = editDigits.split("");
+      // editDigits-с үүсгэсэн array 6-с бага урттай байвал урд талын утгуудыг 0-р дүүргэнэ
+
+      while (editDigitsArray.length < 6) {
+        editDigitsArray.unshift(0);
+      }
+      const hour = Number(editDigitsArray.shift() + editDigitsArray.shift());
+      const minute = Number(editDigitsArray.shift() + editDigitsArray.shift());
+      const second = Number(editDigitsArray.shift() + editDigitsArray.shift());
+      return { hour, minute, second };
+    },
   },
   watch: {
-    isOnEditMode: function () {
-      const allDigits = this.$el.querySelectorAll(`.digit`);
-      allDigits[this.cursorIndex].classList.add("cursor-on");
+    isOnEditMode: function (prevValue, value) {
+      // isOnEditMode true болох үед && edit хийгдэж эхлэх үед
+      if (value) {
+        const allDigits = this.$el.querySelectorAll(`.digit`);
+        allDigits[this.cursorIndex].classList.add("cursor-on");
+      }
     },
     cursorIndex: function () {
       const allDigits = this.$el.querySelectorAll(`.digit`);
@@ -70,14 +96,12 @@ export default {
       allDigits[this.cursorIndex].classList.add("cursor-on");
     },
     editDigits: function () {
-      const editDigitsArray = this.editDigits.split("");
-      // editDigits-с үүсгэсэн array 6-с бага урттай байвал урд талын утгуудыг 0-р дүүргэнэ
-      while (editDigitsArray.length < 6) {
-        editDigitsArray.unshift(0);
-      }
-      this.hour = Number(editDigitsArray.shift() + editDigitsArray.shift());
-      this.minute = Number(editDigitsArray.shift() + editDigitsArray.shift());
-      this.second = Number(editDigitsArray.shift() + editDigitsArray.shift());
+      const { hour, minute, second } = this.getTimeFromEditDigits(
+        this.editDigits
+      );
+      this.hour = hour;
+      this.minute = minute;
+      this.second = second;
     },
   },
   computed: {
@@ -152,7 +176,7 @@ export default {
   25% {
     visibility: hidden;
   }
-  75%{
+  75% {
     visibility: hidden;
   }
   100% {
