@@ -1,4 +1,4 @@
-export default firebaseConfig = {
+export default {
     apiKey: "AIzaSyC3srnvTJQlGd6cYwoBWTZ27FbvLhhn5_M",
     authDomain: "scoreboard-9e644.firebaseapp.com",
     projectId: "scoreboard-9e644",

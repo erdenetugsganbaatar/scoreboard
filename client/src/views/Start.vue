@@ -6,7 +6,7 @@
       :teams="westTeams"
     ></TeamDisplay>
     <div class="controllers">
-      <TimePicker :setGameDuration="setGameDuration"></TimePicker>
+      <TimePicker :setMatchDuration="setMatchDuration"></TimePicker>
       <button class="primary-button start-button" @click="onStartBtnClick">
         Start match
       </button>
@@ -37,7 +37,7 @@ export default {
       westTeams: [],
       eastSelection: null,
       westSelection: null,
-      gameDuration: 2880, // 48 minutes by default
+      matchDuration: 2880, // 48 minutes by default
     };
   },
   props: {
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     async fetchTeams() {
-      const res = await axios.get("/teams");
+      const res = await axios.get("/team/all");
       return res.data;
     },
     async fetchAndSplitTeams() {
@@ -56,18 +56,18 @@ export default {
     setSelection(id, conference) {
       this[conference + "Selection"] = id;
     },
-    setGameDuration(duration) {
-      this.gameDuration = duration;
+    setMatchDuration(duration) {
+      this.matchDuration = duration;
     },
     onStartBtnClick() {
-      const gameData = {
+      const matchData = {
         teams: {
           east: this.eastTeams.find((team) => team.id == this.eastSelection),
           west: this.westTeams.find((team) => team.id == this.westSelection),
         },
-        time: this.gameDuration,
+        time: this.matchDuration,
       };
-      this.startMatch(gameData);
+      this.startMatch(matchData);
     },
   },
   mounted() {

@@ -7,11 +7,10 @@
     }"
     class="team-card animate__animated"
   >
-    <div class="abbr">{{ team.abbreviation }}</div>
-    <div class="full-name">{{ team.full_name }}</div>
+    <div class="abbr">{{ team.abbr }}</div>
+    <div class="full-name">{{ `${team.city} ${team.name}` }}</div>
   </div>
 </template>
-
 <script>
 export default {
   name: "TeamCard",

@@ -22,8 +22,8 @@ export default {
     Match,
   },
   methods: {
-    async startMatch(gameData) {
-      const res = await axios.post("/start", gameData);
+    async startMatch(matchData) {
+      const res = await axios.post("/start", matchData);
       if (res.status === 200) this.isStarted = true;
       console.log(res.data); // TEMP
     },

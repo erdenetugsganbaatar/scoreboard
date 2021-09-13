@@ -29,16 +29,16 @@ export default {
   name: "TimePicker",
   data() {
     return {
-      hour: 5,
-      minute: 0,
+      hour: 0,
+      minute: 48,
       second: 0,
-      isOnEditMode: true,
+      isOnEditMode: false,
       cursorIndex: 5, // digit-г хойноос нь тоолох index cursor хаана байх ёстойг заана
       editDigits: "",
     };
   },
   props: {
-    setGameDuration: Function,
+    setMatchDuration: Function,
   },
   methods: {
     editModeEventListener: function (e) {
@@ -47,8 +47,8 @@ export default {
         this.editDigits += e.key;
         if (this.cursorIndex == 0) {
           this.cursorIndex = 5;
-          this.setGameDuration(
-            this.getGameDurationFromEditDigits(this.editDigits)
+          this.setMatchDuration(
+            this.getMatchDurationFromEditDigits(this.editDigits)
           );
           return (this.isOnEditMode = false);
         }
@@ -65,7 +65,7 @@ export default {
         document.removeEventListener("keyup", this.editModeEventListener);
       }
     },
-    getGameDurationFromEditDigits: function (editDigits) {
+    getMatchDurationFromEditDigits: function (editDigits) {
       const { hour, minute, second } = this.getTimeFromEditDigits(editDigits);
       return 60 * (60 * hour + minute) + second;
     },
@@ -157,6 +157,7 @@ export default {
 }
 .time-picker-wrapper {
   cursor: pointer;
+  text-align: center;
 }
 .edit-mode * {
   color: rgb(190, 190, 190);
