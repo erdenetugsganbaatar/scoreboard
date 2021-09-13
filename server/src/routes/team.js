@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validate, ValidationError } from 'express-validation';
+import { validate } from 'express-validation';
 
 import * as teamController from "../controllers/team/team.controller"
 import * as teamValidator from "../controllers/team/team.validator"

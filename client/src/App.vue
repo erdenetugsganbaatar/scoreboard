@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <Start v-if="!isStarted" :startMatch="startMatch"></Start>
-    <Match v-else />
+    <Match v-else :matchID="matchID" />
   </div>
 </template>
 <script>
@@ -15,6 +15,7 @@ export default {
   data() {
     return {
       isStarted: false,
+      matchID: null,
     };
   },
   components: {
@@ -23,9 +24,15 @@ export default {
   },
   methods: {
     async startMatch(matchData) {
-      const res = await axios.post("/start", matchData);
-      if (res.status === 200) this.isStarted = true;
-      console.log(res.data); // TEMP
+      try {
+        const res = await axios.post("/match/start", matchData);
+        if (res.status === 200) {
+          this.isStarted = true;
+          this.matchID = res.data.matchID;
+        }
+      } catch (e) {
+        console.error(e);
+      }
     },
   },
 };

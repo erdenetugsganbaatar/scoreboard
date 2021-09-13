@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/team", team);
-app.use("/", matchRouter);
+app.use("/match", matchRouter);
 app.use(errorHandler)
 
 const { PORT = 3000 } = process.env;

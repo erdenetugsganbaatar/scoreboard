@@ -62,10 +62,10 @@ export default {
     onStartBtnClick() {
       const matchData = {
         teams: {
-          east: this.eastTeams.find((team) => team.id == this.eastSelection),
-          west: this.westTeams.find((team) => team.id == this.westSelection),
+          East: this.eastSelection + "",
+          West: this.westSelection + "",
         },
-        time: this.matchDuration,
+        matchDuration: this.matchDuration,
       };
       this.startMatch(matchData);
     },
