@@ -10,7 +10,7 @@ export const startMatch = async (req, res) => {
         const dateNowInMil = new Date().getTime();
         const dateMatchWillEndInMil = dateNowInMil + (matchDuration * 1000);
 
-        const docRef = await addDoc(collection(db, "matches"), {
+        const data = {
             teams: {
                 East: {
                     id: East,
@@ -23,7 +23,11 @@ export const startMatch = async (req, res) => {
             }, startedAt: dateNowInMil,
             endedAt: dateMatchWillEndInMil,
             matchDuration,
-        })
+        }
+
+        const docRef = await addDoc(collection(db, "matches"), data);
+
+        // successResponse(req, res, { data }, 200);
         successResponse(req, res, { matchID: docRef.id }, 200);
     }
     catch (e) {
@@ -76,7 +80,7 @@ export const addScoreToTeam = async (req, res) => {
         const updatedMatchSnap = { ...matchSnap };
         updatedMatchSnap.teams[conference].score += score;
         await updateDoc(doc(db, "matches", matchID), updatedMatchSnap)
-        return successResponse(req, res, { data: updatedMatchSnap }, 200);
+        return successResponse(req, res, { ...updatedMatchSnap }, 200);
     } catch (e) {
         return errorResponse(req, res, e.message, e.statusCode, e);
     }

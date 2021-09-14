@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       isStarted: false,
-      matchID: null,
+      matchID: null
     };
   },
   components: {
@@ -44,6 +44,15 @@ export default {
   --third-color: hsl(146, 64%, 61%);
   --foreground-color: hsl(143, 62%, 72%);
   --background-color: hsl(83, 51%, 92%);
+}
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height:100vh;
+}
+.app{
+  width:100%;
 }
 .primary-button {
   background-color: var(--primary-color);

@@ -9,6 +9,7 @@
   >
     <div class="abbr">{{ team.abbr }}</div>
     <div class="full-name">{{ `${team.city} ${team.name}` }}</div>
+    <slot></slot>
   </div>
 </template>
 <script>

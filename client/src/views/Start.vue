@@ -83,6 +83,7 @@ export default {
   border-radius: 1rem;
   padding: 1rem;
   width: 100%;
+  max-height:100vh;
 }
 .start-button,
 .time-input {
