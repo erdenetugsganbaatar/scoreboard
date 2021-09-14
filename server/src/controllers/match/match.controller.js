@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc, addDoc, getFirestore, collection, increment } from "firebase/firestore";
+import { doc, getDoc, updateDoc, addDoc, getFirestore, collection, getDocs } from "firebase/firestore";
 import { successResponse, errorResponse } from "../../helpers";
 import firebase from "../../db/firebase";
 
@@ -7,6 +7,9 @@ const db = getFirestore(firebase);
 export const startMatch = async (req, res) => {
     try {
         const { teams: { East, West }, matchDuration } = req.body;
+        const dateNowInMil = new Date().getTime();
+        const dateMatchWillEndInMil = dateNowInMil + (matchDuration * 1000);
+
         const docRef = await addDoc(collection(db, "matches"), {
             teams: {
                 East: {
@@ -17,8 +20,8 @@ export const startMatch = async (req, res) => {
                     id: West,
                     score: 0
                 },
-            }, startedAt: new Date().getTime(),
-            isEnded: false,
+            }, startedAt: dateNowInMil,
+            endedAt: dateMatchWillEndInMil,
             matchDuration,
         })
         successResponse(req, res, { matchID: docRef.id }, 200);
@@ -33,14 +36,30 @@ const getMatchDataByID = async (id) => {
     if (docSnap.exists()) {
         return docSnap.data();
     } else {
-        return {}
+        return null
     }
 }
 
 export const getMatchByID = async (req, res) => {
     try {
-        const matchData = getMatchDataByID(req.params.id);
-        return successResponse(req, res, matchData, 200);
+        const matchData = await getMatchDataByID(req.params.id);
+        console.log(matchData);
+        if (matchData) return successResponse(req, res, matchData, 200);
+        return errorResponse(req, res, `match with id ${req.params.id} cannot be found!`, 404)
+    }
+    catch (e) {
+        return errorResponse(req, res, e.message, e.statusCode, e)
+    }
+}
+
+export const getAllMatches = async (req, res) => {
+    try {
+        const querySnapshot = await getDocs(collection(db, "matches"));
+        const data = []
+        querySnapshot.forEach((doc) => {
+            data.push(doc.data());
+        });
+        return successResponse(req, res, data, 200);
     }
     catch (e) {
         return errorResponse(req, res, e.message, e.statusCode, e)
@@ -50,14 +69,15 @@ export const getMatchByID = async (req, res) => {
 export const addScoreToTeam = async (req, res) => {
     try {
         const { matchID, conference, score } = req.body;
-        const MatchSnap = await getMatchDataByID(matchID);
-        const updatedMatchSnap = { ...MatchSnap };
-        console.log(updatedMatchSnap)
+        const matchSnap = await getMatchDataByID(matchID);
+        if (matchSnap.endedAt <= new Date().getTime()) {
+            return errorResponse(req, res, "Match has ended.", 400)
+        }
+        const updatedMatchSnap = { ...matchSnap };
         updatedMatchSnap.teams[conference].score += score;
         await updateDoc(doc(db, "matches", matchID), updatedMatchSnap)
-        successResponse(req, res, { data: updatedMatchSnap }, 200);
-
+        return successResponse(req, res, { data: updatedMatchSnap }, 200);
     } catch (e) {
-        errorResponse(req, res, e.message, e.statusCode, e);
+        return errorResponse(req, res, e.message, e.statusCode, e);
     }
 }

@@ -9,8 +9,7 @@ const router = Router();
 router.post("/start", validate(matchValidator.startMatch), matchController.startMatch)
 
 router.post("/addScoreToTeam", validate(matchValidator.addScoreToTeam), matchController.addScoreToTeam)
-
-
+router.get("/all",matchController.getAllMatches)
 router.get("/:id", matchController.getMatchByID)
 
 
