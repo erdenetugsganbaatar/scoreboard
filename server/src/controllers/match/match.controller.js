@@ -58,12 +58,27 @@ export const getMatchByID = async (req, res) => {
 
 export const getAllMatches = async (req, res) => {
     try {
-        const querySnapshot = await getDocs(collection(db, "matches"));
-        const data = []
-        querySnapshot.forEach((doc) => {
-            data.push(doc.data());
+        const matchSnapShot = await getDocs(collection(db, "matches"));
+        const teamSnapShot = await getDocs(collection(db, "teams"));
+        const matchData = []
+        const teamData = {}
+        teamSnapShot.forEach(doc => {
+            const teamDoc = doc.data();
+            teamData[teamDoc.id] = teamDoc;
+        })
+        matchSnapShot.forEach((doc) => {
+            const docData = JSON.parse(JSON.stringify(doc.data()));
+            Object.keys(docData.teams).forEach(key => {
+                    docData.teams[key] = {
+                        ...docData.teams[key],
+                        ...teamData[docData.teams[key].id]
+                    }
+                
+            })
+            console.log(docData.teams)
+            matchData.push(docData);
         });
-        return successResponse(req, res, data, 200);
+        return successResponse(req, res, matchData, 200);
     }
     catch (e) {
         return errorResponse(req, res, e.message, e.statusCode, e)

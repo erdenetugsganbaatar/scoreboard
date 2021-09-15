@@ -7,8 +7,11 @@
     ></TeamDisplay>
     <div class="controllers">
       <TimePicker :setMatchDuration="setMatchDuration"></TimePicker>
-      <button class="primary-button start-button" @click="onStartBtnClick">
+      <button class="primary-button big-button" @click="onStartBtnClick">
         Start match
+      </button>
+      <button class="big-button secondary-button" @click="goToHistory">
+        show history
       </button>
     </div>
     <TeamDisplay
@@ -42,6 +45,7 @@ export default {
   },
   props: {
     startMatch: Function,
+    goToHistory:Function
   },
   methods: {
     async fetchTeams() {
@@ -69,6 +73,7 @@ export default {
       };
       this.startMatch(matchData);
     },
+
   },
   mounted() {
     this.fetchAndSplitTeams();
@@ -85,7 +90,7 @@ export default {
   width: 100%;
   max-height:100vh;
 }
-.start-button,
+.big-button,
 .time-input {
   font-size: 2rem;
 }
@@ -99,7 +104,7 @@ export default {
   top: 2rem;
   align-self: flex-start;
 }
-.start-button {
+button {
   cursor: pointer;
 }
 .start .team-display {
