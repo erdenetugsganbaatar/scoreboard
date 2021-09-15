@@ -47,7 +47,6 @@ const getMatchDataByID = async (id) => {
 export const getMatchByID = async (req, res) => {
     try {
         const matchData = await getMatchDataByID(req.params.id);
-        console.log(matchData);
         if (matchData) return successResponse(req, res, matchData, 200);
         return errorResponse(req, res, `match with id ${req.params.id} cannot be found!`, 404)
     }
@@ -75,7 +74,6 @@ export const getAllMatches = async (req, res) => {
                     }
                 
             })
-            console.log(docData.teams)
             matchData.push(docData);
         });
         return successResponse(req, res, matchData, 200);

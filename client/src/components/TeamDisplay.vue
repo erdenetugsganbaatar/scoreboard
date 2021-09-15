@@ -63,21 +63,5 @@ export default {
   gap: 1.5rem;
   padding-right:1rem;
 }
-.team-display::-webkit-scrollbar-track
-{
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-  background-color: #F5F5F5;
-}
 
-.team-display::-webkit-scrollbar
-{
-  width: 10px;
-  background-color: #F5F5F5;
-}
-
-.team-display::-webkit-scrollbar-thumb
-{
-  background-color: var(--third-color);
-  border: 2px solid var(--foreground-color);
-}
 </style>

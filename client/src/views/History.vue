@@ -118,6 +118,8 @@ export default {
 .all-history {
   position: absolute;
   left:50%;
+  max-height:80vh;
+  overflow-y:auto;
   z-index:1000;
   top:50%;
   transform: translate(-50%,-50%);
@@ -149,6 +151,7 @@ export default {
 }
 .winner {
   font-size: 4rem;
+  text-align: center;
 }
 .started-at,
 .ended-at {

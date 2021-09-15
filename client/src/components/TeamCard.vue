@@ -27,11 +27,6 @@ export default {
   methods: {
     clickHandler() {
       this.toggleSelected(this.team.id);
-      // console.log(this.index)
-      // index is 0 -> 15
-      // 0 == 0th row 0th col == 0n + 0
-      // 1 == 0th row 1st col == 0n + 1
-      // n is number of columns
     },
   },
   computed: {
